@@ -154,7 +154,7 @@ def generate_launch_description():
         "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
             # TODO: Re-enable `default_planner_request_adapters/AddRuckigTrajectorySmoothing` once its issues are resolved
-            "request_adapters": "default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints",
+# klaus            "request_adapters": "default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints",
             # TODO: Reduce start_state_max_bounds_error once spawning with specific joint configuration is enabled
             "start_state_max_bounds_error": 0.31416,
         },
@@ -185,8 +185,9 @@ def generate_launch_description():
     trajectory_execution = {
         "allow_trajectory_execution": True,
         "moveit_manage_controllers": False,
-        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
-        "trajectory_execution.allowed_goal_duration_margin": 0.5,
+	"execution_duration_monitoring": False,
+        "trajectory_execution.allowed_execution_duration_scaling": 3.0,
+        "trajectory_execution.allowed_goal_duration_margin": 1.0,
         "trajectory_execution.allowed_start_tolerance": 0.01,
     }
 
@@ -268,7 +269,7 @@ def generate_launch_description():
         # move_servo
         Node(
             package="moveit_servo",
-            executable="servo_node_main",
+            executable="servo_node",
             output="log",
             arguments=["--ros-args", "--log-level", log_level],
             parameters=[
