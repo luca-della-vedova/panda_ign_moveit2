@@ -105,7 +105,11 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
         ),
         DeclareLaunchArgument(
             "model",
-            default_value="model.sdf",
+            default_value=path.join(
+                get_package_share_directory("panda_description"),
+                "panda",
+                "model.sdf",
+            ),
             description="Name or filepath of model to load.",
         ),
         # Miscellaneous
