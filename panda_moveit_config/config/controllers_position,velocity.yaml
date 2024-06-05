@@ -13,6 +13,7 @@ controller_manager:
 
 joint_trajectory_controller:
   ros__parameters:
+    allow_nonzero_velocity_at_trajectory_end: TRUE
     joints:
       - panda_joint1
       - panda_joint2
