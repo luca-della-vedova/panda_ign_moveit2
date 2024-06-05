@@ -156,12 +156,12 @@ def generate_launch_description():
             # See https://github.com/moveit/moveit2/blob/672e0ecd48f471fe05057f81e6233272a692a156/MIGRATION.md?plain=1#L11
             # The order of the elements in the adapter corresponds to the order they are processed by the motion planning pipeline.
             # TODO: Re-enable `default_planner_request_adapters/AddRuckigTrajectorySmoothing` once its issues are resolved
-            # "request_adapters": ["default_planning_request_adapters/ResolveConstraintFrames",
+             "request_adapters": ["default_planning_request_adapters/ResolveConstraintFrames"],
             #                      "default_planning_request_adapters/ValidateWorkspaceBounds",
             #                      "default_planning_request_adapters/CheckStartStateBounds",
             #                      "default_planning_request_adapters/CheckStartStateCollision"],
             # # TODO: Reduce start_state_max_bounds_error once spawning with specific joint configuration is enabled
-            # "response_adapters": ["default_planning_response_adapters/AddTimeOptimalParameterization",
+            "response_adapters": ["default_planning_response_adapters/AddTimeOptimalParameterization"],
             #                       #default_planning_response_adapters/ValidateSolution",
             #                       "default_planning_response_adapters/DisplayMotionPath"],
             "start_state_max_bounds_error": 0.31416,
@@ -471,7 +471,7 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
         ),
         DeclareLaunchArgument(
             "log_level",
-            default_value="warn",
+            default_value="debug",
             description="The level of logging that is applied to all ROS 2 nodes launched by this script.",
         ),
     ]
