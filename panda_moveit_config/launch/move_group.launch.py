@@ -156,15 +156,17 @@ def generate_launch_description():
             # See https://github.com/moveit/moveit2/blob/672e0ecd48f471fe05057f81e6233272a692a156/MIGRATION.md?plain=1#L11
             # The order of the elements in the adapter corresponds to the order they are processed by the motion planning pipeline.
             # TODO: Re-enable `default_planner_request_adapters/AddRuckigTrajectorySmoothing` once its issues are resolved
-             "request_adapters": ["default_planning_request_adapters/ResolveConstraintFrames"],
-            #                      "default_planning_request_adapters/ValidateWorkspaceBounds",
-            #                      "default_planning_request_adapters/CheckStartStateBounds",
-            #                      "default_planning_request_adapters/CheckStartStateCollision"],
+             "request_adapters": ["default_planning_request_adapters/ResolveConstraintFrames",
+                                  "default_planning_request_adapters/ValidateWorkspaceBounds",
+                                  "default_planning_request_adapters/CheckStartStateBounds",
+                                  "default_planning_request_adapters/CheckStartStateCollision"],
             # # TODO: Reduce start_state_max_bounds_error once spawning with specific joint configuration is enabled
-            "response_adapters": ["default_planning_response_adapters/AddTimeOptimalParameterization"],
-            #                       #default_planning_response_adapters/ValidateSolution",
-            #                       "default_planning_response_adapters/DisplayMotionPath"],
+            "response_adapters": ["default_planning_response_adapters/AddTimeOptimalParameterization",
+#                                  "default_planning_response_adapters/AddRuckigTrajectorySmoothing",
+                                  "default_planning_response_adapters/ValidateSolution",
+                                  "default_planning_response_adapters/DisplayMotionPath"],
             "start_state_max_bounds_error": 0.31416,
+            #"start_state_max_bounds_error": 0.001,
         },
     }
     _ompl_yaml = load_yaml(
@@ -193,7 +195,7 @@ def generate_launch_description():
     trajectory_execution = {
         "allow_trajectory_execution": True,
         "moveit_manage_controllers": False,
-	"execution_duration_monitoring": False,
+        "execution_duration_monitoring": False,
         "trajectory_execution.allowed_execution_duration_scaling": 3.0,
         "trajectory_execution.allowed_goal_duration_margin": 1.0,
         "trajectory_execution.allowed_start_tolerance": 0.01,
