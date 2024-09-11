@@ -34,10 +34,12 @@ Clone this repository, import dependencies, install dependencies and build with 
 ```bash
 # Clone this repository into your favourite ROS 2 workspace
 git clone https://github.com/AndrejOrsula/panda_ign_moveit2.git
-# Import dependencies
-vcs import < panda_ign_moveit2/panda_ign_moveit2.repos
+
 # Install dependencies
-IGNITION_VERSION=fortress rosdep install -y -r -i --rosdistro ${ROS_DISTRO} --from-paths .
+rosdep install -y -r -i --rosdistro ${ROS_DISTRO} --from-paths .
+
+# Missing dependency for gz_ros2_control (might be a bug)
+apt install ros-${ROS_DISTRO}-diagnostic-updater ros-${ROS_DISTRO}-hardware-interface
 # Build
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 ```
