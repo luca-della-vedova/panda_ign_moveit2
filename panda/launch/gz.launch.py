@@ -2,6 +2,7 @@
 """Example of planning with MoveIt2 and executing motions using ROS 2 controllers within Gazebo"""
 
 from os import path
+from pathlib import Path
 from typing import List
 
 from ament_index_python.packages import get_package_share_directory
@@ -15,12 +16,14 @@ from launch.actions import (
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
+    Command,
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+import xacro
 
 
 def generate_launch_description() -> LaunchDescription:
@@ -28,8 +31,6 @@ def generate_launch_description() -> LaunchDescription:
     declared_arguments = generate_declared_arguments()
 
     # Get substitution for all arguments
-    description_package = LaunchConfiguration("description_package")
-    sdf_model_filepath = LaunchConfiguration("sdf_model_filepath")
     world = LaunchConfiguration("world")
     name = LaunchConfiguration("name")
     prefix = LaunchConfiguration("prefix")
@@ -45,125 +46,100 @@ def generate_launch_description() -> LaunchDescription:
     log_level = LaunchConfiguration("log_level")
 
     # List of processes to be executed
-    # xacro2sdf
-    xacro2sdf = ExecuteProcess(
-        cmd=[
-            PathJoinSubstitution([FindExecutable(name="ros2")]),
-            "run",
-            description_package,
-            "xacro2sdf.bash",
-            ["name:=", name],
-            ["prefix:=", prefix],
-            ["collision_arm:=", collision_arm],
-            ["collision_gripper:=", collision_gripper],
-            ["ros2_control:=", "true"],
-            ["ros2_control_plugin:=", "gz"],
-            ["ros2_control_command_interface:=", ros2_control_command_interface],
-            ["gazebo_preserve_fixed_joint:=", gazebo_preserve_fixed_joint],
-        ],
-        shell=True,
+    xacro_path = Path(get_package_share_directory('panda_description'))/"urdf"/"panda.urdf.xacro"
+    urdf_string = Command(
+        [
+            "xacro",
+            f" {xacro_path}",
+            " name:=", name,
+            " prefix:=", prefix,
+            " collision_arm:=", collision_arm,
+            " collision_gripper:=", collision_gripper,
+            " ros2_control:=", "true",
+            " ros2_control_plugin:=", "gz",
+            " ros2_control_command_interface:=", ros2_control_command_interface,
+            " gazebo_preserve_fixed_joint:=", gazebo_preserve_fixed_joint,
+        ]
     )
-    processes = [xacro2sdf]
-
     # List of included launch descriptions
     launch_descriptions = [
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=xacro2sdf,
-                on_exit=[
-                    # Launch Gazebo
-                    IncludeLaunchDescription(
-                        PythonLaunchDescriptionSource(
-                            PathJoinSubstitution(
-                                [
-                                    FindPackageShare("ros_gz_sim"),
-                                    "launch",
-                                    "gz_sim.launch.py",
-                                ]
-                            )
-                        ),
-                        launch_arguments=[
-                            ("gz_args", [world, " -r -v ", ign_verbosity])
-                        ],
-                    ),
-                    # Launch move_group of MoveIt 2
-                    IncludeLaunchDescription(
-                        PythonLaunchDescriptionSource(
-                            PathJoinSubstitution(
-                                [
-                                    FindPackageShare("panda_moveit_config"),
-                                    "launch",
-                                    "move_group.launch.py",
-                                ]
-                            )
-                        ),
-                        launch_arguments=[
-                            ("name:=", name),
-                            ("prefix:=", prefix),
-                            ("collision_arm", collision_arm),
-                            ("collision_gripper", collision_gripper),
-                            ("ros2_control", "true"),
-                            ("ros2_control_plugin", "gz"),
-                            ("ros2_control_interface", ros2_control_command_interface),
-                            (
-                                "gazebo_preserve_fixed_joint",
-                                gazebo_preserve_fixed_joint,
-                            ),
-                            ("rviz_config", rviz_config),
-                            ("use_sim_time", use_sim_time),
-                            ("log_level", log_level),
-                        ],
-                    ),
-                ],
-            )
+        # Launch Gazebo
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare("ros_gz_sim"),
+                        "launch",
+                        "gz_sim.launch.py",
+                    ]
+                )
+            ),
+            launch_arguments=[
+                ("gz_args", [world, " -r -v ", ign_verbosity])
+            ],
+        ),
+        # Launch move_group of MoveIt 2
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare("panda_moveit_config"),
+                        "launch",
+                        "move_group.launch.py",
+                    ]
+                )
+            ),
+            launch_arguments=[
+                ("name:=", name),
+                ("prefix:=", prefix),
+                ("collision_arm", collision_arm),
+                ("collision_gripper", collision_gripper),
+                ("ros2_control", "true"),
+                ("ros2_control_plugin", "gz"),
+                ("ros2_control_interface", ros2_control_command_interface),
+                (
+                    "gazebo_preserve_fixed_joint",
+                    gazebo_preserve_fixed_joint,
+                ),
+                ("rviz_config", rviz_config),
+                ("use_sim_time", use_sim_time),
+                ("log_level", log_level),
+            ],
         ),
     ]
 
     # List of nodes to be launched
     nodes = [
         # ros_gz_sim_create
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=xacro2sdf,
-                on_exit=[
-                    Node(
-                        package="ros_gz_sim",
-                        executable="create",
-                        output="log",
-                        arguments=[
-                            "-file",
-                            PathJoinSubstitution(
-                                [
-                                    FindPackageShare(description_package),
-                                    sdf_model_filepath,
-                                ]
-                            ),
-                            "--ros-args",
-                            "--log-level",
-                            log_level,
-                        ],
-                        parameters=[{"use_sim_time": use_sim_time}],
-                    ),
-                    # ros_gz_bridge (clock -> ROS 2)
-                    Node(
-                        package="ros_gz_bridge",
-                        executable="parameter_bridge",
-                        output="log",
-                        arguments=[
-                            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-                            "--ros-args",
-                            "--log-level",
-                            log_level,
-                        ],
-                        parameters=[{"use_sim_time": use_sim_time}],
-                    ),
-                ],
-            )
+        Node(
+            package="ros_gz_sim",
+            executable="create",
+            output="log",
+            arguments=[
+                "-string", urdf_string,
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+        ),
+        # ros_gz_bridge (clock -> ROS 2)
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            output="log",
+            arguments=[
+                "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
         ),
     ]
 
     return LaunchDescription(
-        declared_arguments + processes + launch_descriptions + nodes
+        declared_arguments + launch_descriptions + nodes
     )
 
 
@@ -173,17 +149,6 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
     """
 
     return [
-        # Location of xacro/URDF to visualise
-        DeclareLaunchArgument(
-            "description_package",
-            default_value="panda_description",
-            description="Custom package with robot description.",
-        ),
-        DeclareLaunchArgument(
-            "sdf_model_filepath",
-            default_value=path.join("panda", "model.sdf"),
-            description="Path to SDF description of the robot, relative to share of `description_package`.",
-        ),
         # SDF world for Gazebo
         DeclareLaunchArgument(
             "world",
