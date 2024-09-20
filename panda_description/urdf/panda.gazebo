@@ -13,6 +13,15 @@
 
         <parameters>${controller_parameters}</parameters>
       </plugin>
+      <plugin filename="gz-sim-detachable-joint-system"
+              name="gz::sim::systems::DetachableJoint">
+       <parent_link>panda_leftfinger</parent_link>
+       <child_model>Coke</child_model>
+       <child_link>body</child_link>
+       <detach_topic>/panda/detach</detach_topic>
+       <attach_topic>/panda/attach</attach_topic>
+       <output_topic>/panda/state</output_topic>
+      </plugin>
     </gazebo>
   </xacro:macro>
 

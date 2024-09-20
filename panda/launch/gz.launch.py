@@ -37,8 +37,14 @@ def generate_launch_description() -> LaunchDescription:
     gazebo_preserve_fixed_joint = LaunchConfiguration("gazebo_preserve_fixed_joint")
     rviz_config = LaunchConfiguration("rviz_config")
     use_sim_time = LaunchConfiguration("use_sim_time")
-    ign_verbosity = LaunchConfiguration("ign_verbosity")
+    gz_verbosity = LaunchConfiguration("gz_verbosity")
     log_level = LaunchConfiguration("log_level")
+    panda_x = LaunchConfiguration("panda_x")
+    panda_y = LaunchConfiguration("panda_y")
+    panda_z = LaunchConfiguration("panda_z")
+    panda_r = LaunchConfiguration("panda_r")
+    panda_p = LaunchConfiguration("panda_p")
+    panda_y = LaunchConfiguration("panda_y")
 
     # List of processes to be executed
     xacro_path = Path(get_package_share_directory('panda_description'))/"urdf"/"panda.urdf.xacro"
@@ -70,7 +76,7 @@ def generate_launch_description() -> LaunchDescription:
                 )
             ),
             launch_arguments=[
-                ("gz_args", [world, " -r -v ", ign_verbosity])
+                ("gz_args", [world, " -r -v ", gz_verbosity])
             ],
         ),
         # Launch move_group of MoveIt 2
@@ -112,6 +118,18 @@ def generate_launch_description() -> LaunchDescription:
             output="log",
             arguments=[
                 "-string", urdf_string,
+                "-x",
+                panda_x,
+                "-y",
+                panda_y,
+                "-z",
+                panda_z,
+                "-R",
+                panda_r,
+                "-P",
+                panda_p,
+                "-Y",
+                panda_y,
                 "--ros-args",
                 "--log-level",
                 log_level,
@@ -200,7 +218,7 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
             description="If true, use simulated clock.",
         ),
         DeclareLaunchArgument(
-            "ign_verbosity",
+            "gz_verbosity",
             default_value="3",
             description="Verbosity level for Gazebo (0~4).",
         ),
@@ -208,5 +226,35 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "log_level",
             default_value="warn",
             description="The level of logging that is applied to all ROS 2 nodes launched by this script.",
+        ),
+        DeclareLaunchArgument(
+            "panda_x",
+            default_value="0",
+            description="X component of arm spawning position in meters",
+        ),
+        DeclareLaunchArgument(
+            "panda_y",
+            default_value="0",
+            description="Y component of arm spawning position in meters",
+        ),
+        DeclareLaunchArgument(
+            "panda_z",
+            default_value="0",
+            description="Z component of arm spawning position in meters",
+        ),
+        DeclareLaunchArgument(
+            "panda_r",
+            default_value="0",
+            description="Roll component of arm spawning orientation in radians",
+        ),
+        DeclareLaunchArgument(
+            "panda_p",
+            default_value="0",
+            description="Pitch component of arm spawning orientation in radians",
+        ),
+        DeclareLaunchArgument(
+            "panda_y",
+            default_value="0",
+            description="Yaw component of arm spawning orientation in radians",
         ),
     ]
