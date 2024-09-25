@@ -46,7 +46,7 @@
       <joint name="${prefix}joint4" value="-1.93732"/>
       <joint name="${prefix}joint5" value="-0.0349066"/>
       <joint name="${prefix}joint6" value="2.21657"/>
-      <joint name="${prefix}joint7" value="0.331613"/>
+      <joint name="${prefix}joint7" value="0"/>
     </group_state>
     <group_state group="arm" name="grasp">
       <joint name="${prefix}joint1" value="0.0349066"/>
@@ -55,7 +55,7 @@
       <joint name="${prefix}joint4" value="-1.98968"/>
       <joint name="${prefix}joint5" value="-0.0698132"/>
       <joint name="${prefix}joint6" value="2.49582"/>
-      <joint name="${prefix}joint7" value="0.349066"/>
+      <joint name="${prefix}joint7" value="0"/>
     </group_state>
     <group_state group="arm" name="pre_drop">
       <joint name="${prefix}joint1" value="1.50098"/>
@@ -64,7 +64,7 @@
       <joint name="${prefix}joint4" value="-0.959931"/>
       <joint name="${prefix}joint5" value="-0.663225"/>
       <joint name="${prefix}joint6" value="2.16421"/>
-      <joint name="${prefix}joint7" value="0.0523599"/>
+      <joint name="${prefix}joint7" value="0"/>
     </group_state>
     <group_state group="arm" name="drop">
       <joint name="${prefix}joint1" value="1.72788"/>
@@ -73,7 +73,7 @@
       <joint name="${prefix}joint4" value="-0.645772"/>
       <joint name="${prefix}joint5" value="-0.174533"/>
       <joint name="${prefix}joint6" value="2.19911"/>
-      <joint name="${prefix}joint7" value="-0.122173"/>
+      <joint name="${prefix}joint7" value="0"/>
     </group_state>
 
     <disable_collisions link1="${prefix}link0" link2="${prefix}link1" reason="Adjacent"/>
