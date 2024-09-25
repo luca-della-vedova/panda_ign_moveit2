@@ -44,7 +44,7 @@ def generate_launch_description() -> LaunchDescription:
     panda_z = LaunchConfiguration("panda_z")
     panda_r = LaunchConfiguration("panda_r")
     panda_p = LaunchConfiguration("panda_p")
-    panda_y = LaunchConfiguration("panda_y")
+    panda_Y = LaunchConfiguration("panda_Y")
 
     # List of processes to be executed
     xacro_path = Path(get_package_share_directory('panda_description'))/"urdf"/"panda.urdf.xacro"
@@ -129,7 +129,7 @@ def generate_launch_description() -> LaunchDescription:
                 "-P",
                 panda_p,
                 "-Y",
-                panda_y,
+                panda_Y,
                 "--ros-args",
                 "--log-level",
                 log_level,
@@ -253,7 +253,7 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
             description="Pitch component of arm spawning orientation in radians",
         ),
         DeclareLaunchArgument(
-            "panda_y",
+            "panda_Y",
             default_value="0",
             description="Yaw component of arm spawning orientation in radians",
         ),
