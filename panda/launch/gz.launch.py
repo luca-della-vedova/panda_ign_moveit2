@@ -42,8 +42,8 @@ def generate_launch_description() -> LaunchDescription:
     panda_x = LaunchConfiguration("panda_x")
     panda_y = LaunchConfiguration("panda_y")
     panda_z = LaunchConfiguration("panda_z")
-    panda_r = LaunchConfiguration("panda_r")
-    panda_p = LaunchConfiguration("panda_p")
+    panda_R = LaunchConfiguration("panda_R")
+    panda_P = LaunchConfiguration("panda_P")
     panda_Y = LaunchConfiguration("panda_Y")
 
     # List of processes to be executed
@@ -125,9 +125,9 @@ def generate_launch_description() -> LaunchDescription:
                 "-z",
                 panda_z,
                 "-R",
-                panda_r,
+                panda_R,
                 "-P",
-                panda_p,
+                panda_P,
                 "-Y",
                 panda_Y,
                 "--ros-args",
@@ -243,12 +243,12 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
             description="Z component of arm spawning position in meters",
         ),
         DeclareLaunchArgument(
-            "panda_r",
+            "panda_R",
             default_value="0",
             description="Roll component of arm spawning orientation in radians",
         ),
         DeclareLaunchArgument(
-            "panda_p",
+            "panda_P",
             default_value="0",
             description="Pitch component of arm spawning orientation in radians",
         ),
