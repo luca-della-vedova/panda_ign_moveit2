@@ -40,39 +40,39 @@
       <joint name="${prefix}joint7" value="${pi/4}"/>
     </group_state>
     <group_state group="arm" name="pre_grasp">
-      <joint name="${prefix}joint1" value="-0.192"/>
-      <joint name="${prefix}joint2" value="0.297"/>
-      <joint name="${prefix}joint3" value="0"/>
-      <joint name="${prefix}joint4" value="-1.99"/>
-      <joint name="${prefix}joint5" value="0"/>
-      <joint name="${prefix}joint6" value="2.27"/>
+      <joint name="${prefix}joint1" value="0.0174533"/>
+      <joint name="${prefix}joint2" value="0.296706"/>
+      <joint name="${prefix}joint3" value="0.10472"/>
+      <joint name="${prefix}joint4" value="-1.93732"/>
+      <joint name="${prefix}joint5" value="-0.0349066"/>
+      <joint name="${prefix}joint6" value="2.21657"/>
       <joint name="${prefix}joint7" value="0"/>
     </group_state>
     <group_state group="arm" name="grasp">
-      <joint name="${prefix}joint1" value="-0.192"/>
-      <joint name="${prefix}joint2" value="0.52"/>
-      <joint name="${prefix}joint3" value="0"/>
-      <joint name="${prefix}joint4" value="-2.02"/>
-      <joint name="${prefix}joint5" value="0"/>
-      <joint name="${prefix}joint6" value="2.53"/>
+      <joint name="${prefix}joint1" value="0.0349066"/>
+      <joint name="${prefix}joint2" value="0.541052"/>
+      <joint name="${prefix}joint3" value="0.0872665"/>
+      <joint name="${prefix}joint4" value="-1.98968"/>
+      <joint name="${prefix}joint5" value="-0.0698132"/>
+      <joint name="${prefix}joint6" value="2.49582"/>
       <joint name="${prefix}joint7" value="0"/>
     </group_state>
     <group_state group="arm" name="pre_drop">
-      <joint name="${prefix}joint1" value="0.98"/>
-      <joint name="${prefix}joint2" value="1.06"/>
-      <joint name="${prefix}joint3" value="0.42"/>
-      <joint name="${prefix}joint4" value="-1.78"/>
-      <joint name="${prefix}joint5" value="-0.84"/>
-      <joint name="${prefix}joint6" value="2.65"/>
+      <joint name="${prefix}joint1" value="1.50098"/>
+      <joint name="${prefix}joint2" value="1.37881"/>
+      <joint name="${prefix}joint3" value="0.558505"/>
+      <joint name="${prefix}joint4" value="-0.959931"/>
+      <joint name="${prefix}joint5" value="-0.663225"/>
+      <joint name="${prefix}joint6" value="2.16421"/>
       <joint name="${prefix}joint7" value="0"/>
     </group_state>
     <group_state group="arm" name="drop">
-      <joint name="${prefix}joint1" value="1.03"/>
-      <joint name="${prefix}joint2" value="1.26"/>
-      <joint name="${prefix}joint3" value="0.35"/>
-      <joint name="${prefix}joint4" value="-1.61"/>
-      <joint name="${prefix}joint5" value="-0.87"/>
-      <joint name="${prefix}joint6" value="2.70"/>
+      <joint name="${prefix}joint1" value="1.72788"/>
+      <joint name="${prefix}joint2" value="1.5708"/>
+      <joint name="${prefix}joint3" value="0.15708"/>
+      <joint name="${prefix}joint4" value="-0.645772"/>
+      <joint name="${prefix}joint5" value="-0.174533"/>
+      <joint name="${prefix}joint6" value="2.19911"/>
       <joint name="${prefix}joint7" value="0"/>
     </group_state>
 
